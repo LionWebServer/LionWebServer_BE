@@ -1,10 +1,12 @@
 package lionwebserver.lionwebserver.question.domain;
 
 import jakarta.persistence.*;
+import lionwebserver.lionwebserver.answer.domain.Answer;
 import lionwebserver.lionwebserver.auth.domain.User;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,4 +27,7 @@ public class Question {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Answer> answers;
 }
