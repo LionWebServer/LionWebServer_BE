@@ -1,6 +1,7 @@
 package lionwebserver.lionwebserver.auth.domain;
 
 import jakarta.persistence.*;
+import lionwebserver.lionwebserver.answer.domain.Answer;
 import lionwebserver.lionwebserver.question.domain.Question;
 import lombok.Getter;
 

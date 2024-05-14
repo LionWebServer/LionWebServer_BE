@@ -1,23 +1,19 @@
-package lionwebserver.lionwebserver.question.domain;
+package lionwebserver.lionwebserver.answer.domain;
 
 import jakarta.persistence.*;
-import lionwebserver.lionwebserver.answer.domain.Answer;
 import lionwebserver.lionwebserver.auth.domain.User;
+import lionwebserver.lionwebserver.question.domain.Question;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
-public class Question {
-
+public class Answer {
     @Id @GeneratedValue
-    @Column(name = "question_id")
+    @Column(name = "answer_id")
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
     @Column(nullable = false)
     private String content;
 
@@ -28,6 +24,7 @@ public class Question {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Answer> answers;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
+    private Question question;
 }
