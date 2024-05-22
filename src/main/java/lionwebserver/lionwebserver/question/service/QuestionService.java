@@ -49,10 +49,7 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
-    public QuestionPageResponse getQuestions(PaginationDTO paginationDTO) {
-        Long page = paginationDTO.page();
-        Long size = paginationDTO.size();
-
+    public QuestionPageResponse getQuestions(Integer page, Integer size) {
         if(page == null || size == null) {
             throw new QuestionException(QuestionErrorCode.INVALID_INPUT_VALUE);
         }
@@ -61,7 +58,7 @@ public class QuestionService {
         }
 
         // PageRequest 생성 (페이지 인덱스는 0부터 시작하므로, page - 1을 수행)
-        Pageable pageable = PageRequest.of(page.intValue() - 1, size.intValue(), Sort.by(Sort.Direction.DESC, "createdAt"));
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "createdAt"));
 
         // 데이터베이스에서 페이지네이션과 정렬을 적용하여 Question 리스트를 조회
         Page<Question> pageOfQuestions = questionRepository.findAll(pageable);
