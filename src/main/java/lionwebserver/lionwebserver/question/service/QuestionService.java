@@ -32,12 +32,12 @@ public class QuestionService {
         String title = questionCreateDTO.title();
         String content = questionCreateDTO.content();
 
-        if(title == null || content == null){
+        if (title == null || content == null) {
             throw new QuestionException(QuestionErrorCode.INVALID_INPUT_VALUE);
         }
 
         User userRef = em.getReference(User.class, userId);
-        if(userRef == null){
+        if (userRef == null) {
             throw new QuestionException(QuestionErrorCode.USER_NOT_FOUND);
         }
         Question question = Question.builder()
@@ -49,31 +49,15 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
-    public QuestionPageResponse getQuestions(Integer page, Integer size) {
-        if(page == null || size == null) {
-            throw new QuestionException(QuestionErrorCode.INVALID_INPUT_VALUE);
-        }
-        if (page < 1 || size < 1) {
-            throw new QuestionException(QuestionErrorCode.INVALID_INPUT_VALUE);
-        }
-
-        // PageRequest 생성 (페이지 인덱스는 0부터 시작하므로, page - 1을 수행)
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-
-        // 데이터베이스에서 페이지네이션과 정렬을 적용하여 Question 리스트를 조회
-        Page<Question> pageOfQuestions = questionRepository.findAll(pageable);
-
-        // Entity 리스트를 DTO 리스트로 변환
-        List<QuestionListDTO> questionDTOs = pageOfQuestions.getContent()
-                .stream()
+    public List<QuestionListDTO> getQuestions() {
+        List<Question> questions = questionRepository.findAll();
+        List<QuestionListDTO> questionList = questions.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
-
-        return new QuestionPageResponse(questionDTOs, pageOfQuestions.getTotalPages(), pageOfQuestions.getTotalElements(), pageOfQuestions.getNumber() + 1, pageOfQuestions.getSize());
+        return questionList;
     }
 
     private QuestionListDTO convertToDTO(Question question) {
-        // 필요에 따라 구현, 예를 들어:
         return new QuestionListDTO(question.getId(), question.getTitle(), question.getUser().getUserName(), question.getCreatedAt());
     }
 

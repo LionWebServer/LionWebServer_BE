@@ -31,9 +31,7 @@ public class QuestionController {
         return ResponseEntity.ok().body(questionService.getQuestion(questionId));
     }
     @GetMapping("/api/question-list")
-    public ResponseEntity<QuestionPageResponse> getQuestions(@RequestParam int page,
-                                                             @RequestParam int size) {
-
-        return ResponseEntity.ok().body(questionService.getQuestions(page, size));
+    public ResponseEntity<List<QuestionListDTO>> getQuestions() {
+        return ResponseEntity.ok().body(questionService.getQuestions());
     }
 }
