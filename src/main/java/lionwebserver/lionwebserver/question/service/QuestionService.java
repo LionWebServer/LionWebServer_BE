@@ -65,6 +65,7 @@ public class QuestionService {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new QuestionException(QuestionErrorCode.QUESTION_NOT_FOUND));
 
-        return new QuestionDTO(question.getId(), question.getTitle(), question.getContent(), question.getCreatedAt(), question.getUser().getUserName());
+        return new QuestionDTO(question.getId(), question.getTitle(),
+                question.getContent(), question.getCreatedAt(), question.getUser().getUserName());
     }
 }

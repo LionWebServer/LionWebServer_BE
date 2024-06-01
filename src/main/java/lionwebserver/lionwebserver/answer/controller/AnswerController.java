@@ -19,7 +19,7 @@ public class AnswerController {
     @PostMapping("/api/answer")
     public ResponseEntity<?> createAnswer(@RequestBody AnswerCreateDTO answerCreateDTO,
                                           @Parameter(hidden = true) @AuthUser Long userId) {
-        answerService.createAnswer(answerCreateDTO, 1L);
+        answerService.createAnswer(answerCreateDTO, userId);
         return ResponseEntity.ok().body("답변이 등록되었습니다.");
     }
 

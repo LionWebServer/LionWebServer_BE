@@ -6,7 +6,8 @@ import lombok.Getter;
 @Getter
 public enum AnswerErrorCode implements ErrorCode {
     USER_NOT_FOUND(3000, 404, "사용자를 찾을 수 없습니다."),
-    QUESTION_NOT_FOUND(3001, 404, "질문을 찾을 수 없습니다.");
+    QUESTION_NOT_FOUND(3001, 404, "질문을 찾을 수 없습니다."),
+    EMPTY_INPUT_VALUE(3002, 400, "빈 입력 값입니다.");
 
 
     private final int exceptionCode;

@@ -25,18 +25,19 @@ public class AnswerService {
     private final EntityManager em;
 
     public void createAnswer(AnswerCreateDTO answerCreateDTO, Long userId) {
-        // 구현해 -> 답변을 등록하는 비즈니스 로직
         String content = answerCreateDTO.content();
-        // 답변 내용이 없으면 예외를 발생시킨다.
+
         if (content == null) {
-            throw new IllegalArgumentException("답변 내용이 없습니다.");
+            throw new AnswerException(AnswerErrorCode.EMPTY_INPUT_VALUE);
         }
-        // 답변을 저장한다.
+
         User userRef = em.getReference(User.class, userId);
         Question questionRef = em.getReference(Question.class, answerCreateDTO.questionId());
+
         if (userRef == null) {
             throw new AnswerException(AnswerErrorCode.USER_NOT_FOUND);
         }
+
         Answer answer = Answer.builder()
                 .content(content)
                 .user(userRef)
@@ -51,7 +52,8 @@ public class AnswerService {
                 .orElseThrow(() -> new AnswerException(AnswerErrorCode.QUESTION_NOT_FOUND));
         List<Answer> answers = question.getAnswers();
         return answers.stream()
-                .map(answer -> new AnswerDTO(answer.getId(), answer.getContent(), answer.getUser().getUserName(), LocalDateTime.now()))
+                .map(answer -> new AnswerDTO(answer.getId(), answer.getContent()
+                        , answer.getUser().getUserName(), LocalDateTime.now()))
                 .toList();
     }
 }
