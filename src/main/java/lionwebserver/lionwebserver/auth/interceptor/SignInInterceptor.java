@@ -19,6 +19,9 @@ public class SignInInterceptor implements HandlerInterceptor {
     private final AuthenticationContext authenticationContext;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (request.getMethod().equals("OPTIONS")) {
+            return true;
+        }
         String accessToken = AuthenticationExtractor.extractAccessToken(request)
                 .orElseThrow(() -> new AuthException(AuthErrorCode.UNAUTHORIZED));
 
